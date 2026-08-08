@@ -683,6 +683,7 @@
       }
 
       let rotationY = 0;
+      let rotationYTarget = 0;
       let dragging = false;
       let lastX = 0;
       let lastY = 0;
@@ -716,7 +717,14 @@
       function frame() {
         try {
           if (!dragging && autoRotate && hoveredIndex === -1 && selectedIndex === -1 && contentProjects.classList.contains('open')) {
-            rotationY += 0.06;
+            rotationYTarget += 0.06;
+          }
+          // плавно "подтягиваем" текущий угол к целевому вместо мгновенного
+          // скачка - движение карточек при пролистывании/вращении становится
+          // мягче, без рывков на каждое микро-событие мыши/пальца
+          const diff = rotationYTarget - rotationY;
+          if (Math.abs(diff) > 0.001) {
+            rotationY += diff * 0.18;
             applyRingTransform();
           }
         } catch (err) {
@@ -821,11 +829,10 @@
         if (moved > 4) {
           // на мобильном вращаем вертикальным свайпом (по dy), на десктопе -
           // горизонтальным перетаскиванием (по dx), как и раньше
-          const delta = isVerticalMode ? (e.clientY - lastY) : (e.clientX - lastX);
+          const delta = isVerticalMode ? (lastY - e.clientY) : (e.clientX - lastX);
           lastX = e.clientX;
           lastY = e.clientY;
-          rotationY += delta * 0.4;
-          applyRingTransform();
+          rotationYTarget += delta * 0.4;
         }
       });
 
