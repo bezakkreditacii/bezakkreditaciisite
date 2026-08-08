@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>aboutme / projects</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,6 +18,7 @@
     background: #ffffff;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     overflow: hidden;
+    touch-action: manipulation;
   }
 
   .topbar {
@@ -358,11 +359,8 @@
   /* ===================== АДАПТИВ ПОД МОБИЛЬНЫЕ ЭКРАНЫ ===================== */
   @media (max-width: 640px) {
     html, body {
-      /* на мобильном контента иногда чуть больше экрана - лучше дать
-         прокрутку, чем обрезать/наезжать содержимое друг на друга */
-      overflow-y: auto;
-      height: auto;
-      min-height: 100%;
+      overflow: hidden;
+      height: 100%;
     }
 
     /* шапка: логотип и переключатель языка - в одну строку сверху,
@@ -444,11 +442,13 @@
       max-width: 100%;
     }
 
-    /* 3D-кольцо проектов: даём сцене больше высоты, чтобы было видно
-       несколько карточек, уходящих к горизонту вверх и вниз (как на
-       десктопе они уходят влево/вправо), а не только одну по центру */
+    /* 3D-кольцо проектов: высота считается от реальной высоты экрана
+       (100vh минус примерная высота шапки, отступов и подсказки под
+       кольцом), чтобы всё гарантированно помещалось на экране без
+       прокрутки страницы, независимо от размера конкретного телефона */
     .ring-stage {
-      height: 560px;
+      height: calc(100vh - 230px);
+      min-height: 260px;
       overflow: hidden;
       transform: scale(0.85);
       transform-origin: center center;
@@ -456,7 +456,7 @@
 
     .ring-hint {
       font-size: 11px;
-      margin-top: 18px;
+      margin-top: 10px;
     }
 
     /* карточки кольца делаем заметно шире на мобильном */
