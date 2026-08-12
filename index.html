@@ -214,7 +214,7 @@
   .ring-stage {
     position: relative;
     perspective: 1800px;
-    height: 460px;
+    height: 600px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -227,17 +227,17 @@
     width: 1px;
     height: 1px;
     transform-style: preserve-3d;
-    transform: rotateX(-14deg) rotateY(0deg);
+    transform: rotateY(0deg);
   }
 
   .ring-card {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 150px;
-    height: 100px;
-    margin-left: -75px;
-    margin-top: -50px;
+    width: 230px;
+    height: 160px;
+    margin-left: -115px;
+    margin-top: -80px;
     border: 1px solid rgba(0, 0, 0, 0.08);
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     backface-visibility: hidden;
@@ -450,7 +450,7 @@
       height: calc(100vh - 230px);
       min-height: 260px;
       overflow: hidden;
-      transform: scale(0.85);
+      transform: scale(1);
       transform-origin: center center;
     }
 
@@ -459,12 +459,12 @@
       margin-top: 10px;
     }
 
-    /* карточки кольца делаем заметно шире на мобильном */
+    /* карточки кольца делаем крупными - занимают большую часть экрана */
     .ring-card {
-      width: 220px;
-      height: 120px;
-      margin-left: -110px;
-      margin-top: -60px;
+      width: 290px;
+      height: 190px;
+      margin-left: -145px;
+      margin-top: -95px;
     }
 
     /* панель с деталями проекта: на мобильном превью и текст уже не
@@ -555,18 +555,18 @@
     <div class="content-panel" id="content-projects">
       <div class="ring-stage" id="ring-stage">
         <div class="ring" id="projects-ring">
-          <div class="ring-card" data-angle="0.0" data-title="Название проекта 1" data-desc="Здесь краткое описание первого проекта: задача, роль и результат." data-year="2026" data-role="Motion design" data-stack="After Effects" style="transform: rotateY(0.0deg) translateZ(460px); background-image: url('images/project1.jpg'); background-size: cover; background-position: center;"></div>
-          <div class="ring-card" data-angle="30.0" style="transform: rotateY(30.0deg) translateZ(460px); background: linear-gradient(160deg, #eadfe0, #d8c3c6);"></div>
-          <div class="ring-card" data-angle="60.0" style="transform: rotateY(60.0deg) translateZ(460px); background: linear-gradient(160deg, #e2eae2, #c9d9c4);"></div>
-          <div class="ring-card" data-angle="90.0" style="transform: rotateY(90.0deg) translateZ(460px); background: linear-gradient(160deg, #eee6d6, #ddccaa);"></div>
-          <div class="ring-card" data-angle="120.0" data-title="Название проекта 2" data-desc="Здесь краткое описание второго проекта: задача, роль и результат." data-year="2026" data-role="Video editing" data-stack="Premiere Pro" style="transform: rotateY(120.0deg) translateZ(460px); background-image: url('images/project2.jpg'); background-size: cover; background-position: center;"></div>
-          <div class="ring-card" data-angle="150.0" style="transform: rotateY(150.0deg) translateZ(460px); background: linear-gradient(160deg, #dce9e6, #b9d4cd);"></div>
-          <div class="ring-card" data-angle="180.0" style="transform: rotateY(180.0deg) translateZ(460px); background: linear-gradient(160deg, #dfe6f0, #c7d2e3);"></div>
-          <div class="ring-card" data-angle="210.0" style="transform: rotateY(210.0deg) translateZ(460px); background: linear-gradient(160deg, #eadfe0, #d8c3c6);"></div>
-          <div class="ring-card" data-angle="240.0" data-title="Название проекта 3" data-desc="Здесь краткое описание третьего проекта: задача, роль и результат." data-year="2026" data-role="Color grading" data-stack="DaVinci Resolve" style="transform: rotateY(240.0deg) translateZ(460px); background-image: url('images/project3.jpg'); background-size: cover; background-position: center;"></div>
-          <div class="ring-card" data-angle="270.0" style="transform: rotateY(270.0deg) translateZ(460px); background: linear-gradient(160deg, #eee6d6, #ddccaa);"></div>
-          <div class="ring-card" data-angle="300.0" style="transform: rotateY(300.0deg) translateZ(460px); background: linear-gradient(160deg, #e6dfe9, #cdbcd4);"></div>
-          <div class="ring-card" data-angle="330.0" style="transform: rotateY(330.0deg) translateZ(460px); background: linear-gradient(160deg, #dce9e6, #b9d4cd);"></div>
+          <div class="ring-card" data-angle="0.0" data-title="Название проекта 1" data-desc="Здесь краткое описание первого проекта: задача, роль и результат." data-year="2026" data-role="Motion design" data-stack="After Effects" style="transform: rotateY(0.0deg) translateZ(540px); background-image: url('images/project1.jpg'); background-size: cover; background-position: center;"></div>
+          <div class="ring-card" data-angle="30.0" style="transform: rotateY(30.0deg) translateZ(540px); background: linear-gradient(160deg, #eadfe0, #d8c3c6);"></div>
+          <div class="ring-card" data-angle="60.0" style="transform: rotateY(60.0deg) translateZ(540px); background: linear-gradient(160deg, #e2eae2, #c9d9c4);"></div>
+          <div class="ring-card" data-angle="90.0" style="transform: rotateY(90.0deg) translateZ(540px); background: linear-gradient(160deg, #eee6d6, #ddccaa);"></div>
+          <div class="ring-card" data-angle="120.0" data-title="Название проекта 2" data-desc="Здесь краткое описание второго проекта: задача, роль и результат." data-year="2026" data-role="Video editing" data-stack="Premiere Pro" style="transform: rotateY(120.0deg) translateZ(540px); background-image: url('images/project2.jpg'); background-size: cover; background-position: center;"></div>
+          <div class="ring-card" data-angle="150.0" style="transform: rotateY(150.0deg) translateZ(540px); background: linear-gradient(160deg, #dce9e6, #b9d4cd);"></div>
+          <div class="ring-card" data-angle="180.0" style="transform: rotateY(180.0deg) translateZ(540px); background: linear-gradient(160deg, #dfe6f0, #c7d2e3);"></div>
+          <div class="ring-card" data-angle="210.0" style="transform: rotateY(210.0deg) translateZ(540px); background: linear-gradient(160deg, #eadfe0, #d8c3c6);"></div>
+          <div class="ring-card" data-angle="240.0" data-title="Название проекта 3" data-desc="Здесь краткое описание третьего проекта: задача, роль и результат." data-year="2026" data-role="Color grading" data-stack="DaVinci Resolve" style="transform: rotateY(240.0deg) translateZ(540px); background-image: url('images/project3.jpg'); background-size: cover; background-position: center;"></div>
+          <div class="ring-card" data-angle="270.0" style="transform: rotateY(270.0deg) translateZ(540px); background: linear-gradient(160deg, #eee6d6, #ddccaa);"></div>
+          <div class="ring-card" data-angle="300.0" style="transform: rotateY(300.0deg) translateZ(540px); background: linear-gradient(160deg, #e6dfe9, #cdbcd4);"></div>
+          <div class="ring-card" data-angle="330.0" style="transform: rotateY(330.0deg) translateZ(540px); background: linear-gradient(160deg, #dce9e6, #b9d4cd);"></div>
         </div>
       </div>
 
@@ -658,7 +658,7 @@
 
       const cards = Array.from(ring.querySelectorAll('.ring-card'));
       const N = cards.length;
-      const baseRadius = 460;
+      const baseRadius = 540;
 
       // на мобильном (узкий экран) кольцо крутится вертикальным свайпом:
       // карточки располагаются по вертикальному кругу (rotateX), а не по
@@ -681,7 +681,7 @@
       function ringTiltTransform(rotation) {
         return isVerticalMode
           ? `rotateX(${rotation}deg)`
-          : `rotateX(-14deg) rotateY(${rotation}deg)`;
+          : `rotateY(${rotation}deg)`;
       }
 
       let rotationY = 0;
