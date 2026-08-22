@@ -8,7 +8,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; }
+  /* touch-action не наследуется дочерними элементами - если поставить
+     его только на html/body, кнопки/ссылки/панели внутри всё равно
+     могут остаться зумируемыми двойным тапом на некоторых мобильных
+     браузерах. Ставим сразу на все элементы */
+  * { box-sizing: border-box; touch-action: manipulation; }
 
   html, body {
     margin: 0;
@@ -313,14 +317,13 @@
     z-index: 1;
   }
 
-  /* фото-карточки: у каждой карточки два слоя одного и того же фото
-     (заданы прямо в inline style) - сверху чёткий "contain" (видно
-     целиком, без обрезки), под ним тот же снимок с "cover" (заполняет
-     карточку полностью, с обрезкой по краям). Там, где "contain" не
-     дотягивается до края карточки (прозрачные поля), сквозь них
-     проглядывает нижний cover-слой - та же фотография, а не сплошная
-     плашка другого цвета, поэтому переход к краю карточки выглядит
-     плавным продолжением снимка, а не резкой обрезкой */
+  /* фото-карточки: заливаем фото на всю карточку (cover) одним слоем.
+     Раньше здесь пробовали два слоя одного фото (чёткое сверху + залитое
+     снизу, чтобы не обрезать) - но под 3D-поворотом кольца браузер иногда
+     некорректно склеивал два фоновых слоя, из-за чего фото визуально
+     "двоилось"/съезжало при прокрутке. Один слой cover надёжнее: без
+     глюков рендера и без шва/заглушки по краям (карточка просто
+     полностью залита фото, никаких пустых полей нет в принципе) */
 
   /* карточки reels - вертикальные (как TikTok/Reels), а не альбомные */
   .ring-card.reel-card {
@@ -472,6 +475,39 @@
   }
 
   .detail-close:hover {
+    color: #1a1a1a;
+  }
+
+  /* нижний футер сайта - маленькая ссылка Privacy Policy капсом,
+     как в референсе: приглушённый серо-голубой цвет, мелкий кегль,
+     чуть разрежённые буквы. Тот же моноширинный шрифт, что и везде */
+  /* body сделан на overflow:hidden (полноэкранное SPA без скролла) -
+     поэтому футер в конце обычного потока документа мог бы просто не
+     попасть в видимую область. Фиксируем его у нижнего края экрана,
+     чтобы он был виден всегда, независимо от высоты контента */
+  .site-footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 14px 16px;
+    z-index: 6;
+    pointer-events: none;
+  }
+
+  .site-footer a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #9aa0ab;
+    transition: color 0.2s ease;
+    pointer-events: auto;
+  }
+
+  .site-footer a:hover {
     color: #1a1a1a;
   }
 
@@ -702,15 +738,15 @@
     <div class="content-panel" id="content-projects">
       <div class="ring-stage" id="ring-stage">
         <div class="ring" id="projects-ring">
-          <div class="ring-card" data-angle="0.0" data-title="Название проекта 1" data-title-en="Project 1" data-desc="Здесь краткое описание первого проекта: задача, роль и результат." data-desc-en="A short description of the first project: task, role and outcome." data-year="2026" data-role="Motion design" data-stack="After Effects" style="transform: rotateY(0.0deg) translateZ(540px); background-image: url('images/project1.jpg'), url('images/project1.jpg'); background-size: contain, cover; background-repeat: no-repeat, no-repeat; background-position: center, center;"></div>
+          <div class="ring-card" data-angle="0.0" data-title="Название проекта 1" data-title-en="Project 1" data-desc="Здесь краткое описание первого проекта: задача, роль и результат." data-desc-en="A short description of the first project: task, role and outcome." data-year="2026" data-role="Motion design" data-stack="After Effects" data-img="images/project1.jpg" style="transform: rotateY(0.0deg) translateZ(540px); background-image: url('images/project1.jpg'); background-size: cover; background-repeat: no-repeat; background-position: center;"></div>
           <div class="ring-card" data-angle="30.0" style="transform: rotateY(30.0deg) translateZ(540px); background: linear-gradient(160deg, #eadfe0, #d8c3c6);"></div>
           <div class="ring-card" data-angle="60.0" style="transform: rotateY(60.0deg) translateZ(540px); background: linear-gradient(160deg, #e2eae2, #c9d9c4);"></div>
           <div class="ring-card" data-angle="90.0" style="transform: rotateY(90.0deg) translateZ(540px); background: linear-gradient(160deg, #eee6d6, #ddccaa);"></div>
-          <div class="ring-card" data-angle="120.0" data-title="Название проекта 2" data-title-en="Project 2" data-desc="Здесь краткое описание второго проекта: задача, роль и результат." data-desc-en="A short description of the second project: task, role and outcome." data-year="2026" data-role="Video editing" data-stack="Premiere Pro" style="transform: rotateY(120.0deg) translateZ(540px); background-image: url('images/project2.jpg'), url('images/project2.jpg'); background-size: contain, cover; background-repeat: no-repeat, no-repeat; background-position: center, center;"></div>
+          <div class="ring-card" data-angle="120.0" data-title="Название проекта 2" data-title-en="Project 2" data-desc="Здесь краткое описание второго проекта: задача, роль и результат." data-desc-en="A short description of the second project: task, role and outcome." data-year="2026" data-role="Video editing" data-stack="Premiere Pro" data-img="images/project2.jpg" style="transform: rotateY(120.0deg) translateZ(540px); background-image: url('images/project2.jpg'); background-size: cover; background-repeat: no-repeat; background-position: center;"></div>
           <div class="ring-card" data-angle="150.0" style="transform: rotateY(150.0deg) translateZ(540px); background: linear-gradient(160deg, #dce9e6, #b9d4cd);"></div>
           <div class="ring-card" data-angle="180.0" style="transform: rotateY(180.0deg) translateZ(540px); background: linear-gradient(160deg, #dfe6f0, #c7d2e3);"></div>
           <div class="ring-card" data-angle="210.0" style="transform: rotateY(210.0deg) translateZ(540px); background: linear-gradient(160deg, #eadfe0, #d8c3c6);"></div>
-          <div class="ring-card" data-angle="240.0" data-title="Название проекта 3" data-title-en="Project 3" data-desc="Здесь краткое описание третьего проекта: задача, роль и результат." data-desc-en="A short description of the third project: task, role and outcome." data-year="2026" data-role="Color grading" data-stack="DaVinci Resolve" style="transform: rotateY(240.0deg) translateZ(540px); background-image: url('images/project3.jpg'), url('images/project3.jpg'); background-size: contain, cover; background-repeat: no-repeat, no-repeat; background-position: center, center;"></div>
+          <div class="ring-card" data-angle="240.0" data-title="Название проекта 3" data-title-en="Project 3" data-desc="Здесь краткое описание третьего проекта: задача, роль и результат." data-desc-en="A short description of the third project: task, role and outcome." data-year="2026" data-role="Color grading" data-stack="DaVinci Resolve" data-img="images/project3.jpg" style="transform: rotateY(240.0deg) translateZ(540px); background-image: url('images/project3.jpg'); background-size: cover; background-repeat: no-repeat; background-position: center;"></div>
           <div class="ring-card" data-angle="270.0" style="transform: rotateY(270.0deg) translateZ(540px); background: linear-gradient(160deg, #eee6d6, #ddccaa);"></div>
           <div class="ring-card" data-angle="300.0" style="transform: rotateY(300.0deg) translateZ(540px); background: linear-gradient(160deg, #e6dfe9, #cdbcd4);"></div>
           <div class="ring-card" data-angle="330.0" style="transform: rotateY(330.0deg) translateZ(540px); background: linear-gradient(160deg, #dce9e6, #b9d4cd);"></div>
@@ -733,15 +769,15 @@
     <div class="content-panel" id="content-reels">
       <div class="ring-stage" id="reels-stage">
         <div class="ring" id="reels-ring">
-          <div class="ring-card reel-card" data-angle="0.0" data-title="Reel 1" data-desc="Здесь краткое описание первого рилса." data-desc-en="A short description of the first reel." data-year="2026" data-role="Video editing" data-stack="CapCut" style="transform: rotateY(0.0deg) translateZ(540px); background-image: url('images/reel1.jpg'), url('images/reel1.jpg'); background-size: contain, cover; background-repeat: no-repeat, no-repeat; background-position: center, center;"></div>
+          <div class="ring-card reel-card" data-angle="0.0" data-title="Reel 1" data-desc="Здесь краткое описание первого рилса." data-desc-en="A short description of the first reel." data-year="2026" data-role="Video editing" data-stack="CapCut" data-img="images/reel1.jpg" style="transform: rotateY(0.0deg) translateZ(540px); background-image: url('images/reel1.jpg'); background-size: cover; background-repeat: no-repeat; background-position: center;"></div>
           <div class="ring-card reel-card" data-angle="30.0" style="transform: rotateY(30.0deg) translateZ(540px); background: linear-gradient(160deg, #2a2a2a, #444);"></div>
           <div class="ring-card reel-card" data-angle="60.0" style="transform: rotateY(60.0deg) translateZ(540px); background: linear-gradient(160deg, #333, #555);"></div>
           <div class="ring-card reel-card" data-angle="90.0" style="transform: rotateY(90.0deg) translateZ(540px); background: linear-gradient(160deg, #2a2a2a, #444);"></div>
-          <div class="ring-card reel-card" data-angle="120.0" data-title="Reel 2" data-desc="Здесь краткое описание второго рилса." data-desc-en="A short description of the second reel." data-year="2026" data-role="Video editing" data-stack="CapCut" style="transform: rotateY(120.0deg) translateZ(540px); background-image: url('images/reel2.jpg'), url('images/reel2.jpg'); background-size: contain, cover; background-repeat: no-repeat, no-repeat; background-position: center, center;"></div>
+          <div class="ring-card reel-card" data-angle="120.0" data-title="Reel 2" data-desc="Здесь краткое описание второго рилса." data-desc-en="A short description of the second reel." data-year="2026" data-role="Video editing" data-stack="CapCut" data-img="images/reel2.jpg" style="transform: rotateY(120.0deg) translateZ(540px); background-image: url('images/reel2.jpg'); background-size: cover; background-repeat: no-repeat; background-position: center;"></div>
           <div class="ring-card reel-card" data-angle="150.0" style="transform: rotateY(150.0deg) translateZ(540px); background: linear-gradient(160deg, #333, #555);"></div>
           <div class="ring-card reel-card" data-angle="180.0" style="transform: rotateY(180.0deg) translateZ(540px); background: linear-gradient(160deg, #2a2a2a, #444);"></div>
           <div class="ring-card reel-card" data-angle="210.0" style="transform: rotateY(210.0deg) translateZ(540px); background: linear-gradient(160deg, #333, #555);"></div>
-          <div class="ring-card reel-card" data-angle="240.0" data-title="Reel 3" data-desc="Здесь краткое описание третьего рилса." data-desc-en="A short description of the third reel." data-year="2026" data-role="Video editing" data-stack="CapCut" style="transform: rotateY(240.0deg) translateZ(540px); background-image: url('images/reel3.jpg'), url('images/reel3.jpg'); background-size: contain, cover; background-repeat: no-repeat, no-repeat; background-position: center, center;"></div>
+          <div class="ring-card reel-card" data-angle="240.0" data-title="Reel 3" data-desc="Здесь краткое описание третьего рилса." data-desc-en="A short description of the third reel." data-year="2026" data-role="Video editing" data-stack="CapCut" data-img="images/reel3.jpg" style="transform: rotateY(240.0deg) translateZ(540px); background-image: url('images/reel3.jpg'); background-size: cover; background-repeat: no-repeat; background-position: center;"></div>
           <div class="ring-card reel-card" data-angle="270.0" style="transform: rotateY(270.0deg) translateZ(540px); background: linear-gradient(160deg, #2a2a2a, #444);"></div>
           <div class="ring-card reel-card" data-angle="300.0" style="transform: rotateY(300.0deg) translateZ(540px); background: linear-gradient(160deg, #333, #555);"></div>
           <div class="ring-card reel-card" data-angle="330.0" style="transform: rotateY(330.0deg) translateZ(540px); background: linear-gradient(160deg, #2a2a2a, #444);"></div>
@@ -774,7 +810,25 @@
     </div>
   </div>
 
+  <div class="site-footer">
+    <a href="privacy-policy.html" data-ru="Privacy Policy" data-en="Privacy Policy">Privacy Policy</a>
+  </div>
+
   <script>
+    // JS-подстраховка от зума двойным тапом: viewport meta
+    // (user-scalable=no) и CSS touch-action браузеры иногда игнорируют
+    // именно для двойного тапа (особенно старые версии iOS Safari) -
+    // если два touchend случились подряд быстрее 350мс, считаем это
+    // двойным тапом и гасим его, чтобы страница не приближалась
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', (e) => {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 350) {
+        e.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, { passive: false });
+
     const btnAbout = document.getElementById('btn-about');
     const btnProjects = document.getElementById('btn-projects');
     const btnReels = document.getElementById('btn-reels');
@@ -1125,11 +1179,15 @@
         // Instagram Reel / TikTok) - показываем реальный проигрыватель
         // вместо статичной картинки. Саму картинку/градиент оставляем
         // как фон под iframe на случай, пока видео грузится.
-        if (card.style.backgroundImage) {
-          detailPreview.style.backgroundImage = card.style.backgroundImage;
-          detailPreview.style.backgroundSize = 'contain, cover';
-          detailPreview.style.backgroundRepeat = 'no-repeat, no-repeat';
-          detailPreview.style.backgroundPosition = 'center, center';
+        // фото карточки для детального просмотра берём из чистого
+        // data-img атрибута, а не из card.style.backgroundImage - так
+        // надёжнее: детальный просмотр не зависит от того, как именно
+        // устроен фон самой карточки в кольце (слои, cover/contain и т.д.)
+        if (card.dataset.img) {
+          detailPreview.style.backgroundImage = `url('${card.dataset.img}')`;
+          detailPreview.style.backgroundSize = 'cover';
+          detailPreview.style.backgroundRepeat = 'no-repeat';
+          detailPreview.style.backgroundPosition = 'center';
           detailPreview.style.background = '';
         } else {
           detailPreview.style.backgroundImage = '';
