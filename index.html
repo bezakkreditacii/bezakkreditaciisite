@@ -1175,22 +1175,38 @@
 
         const card = cards[i];
 
-        // если у карточки указана ссылка на видео (YouTube Shorts /
-        // Instagram Reel / TikTok) - показываем реальный проигрыватель
-        // вместо статичной картинки. Саму картинку/градиент оставляем
-        // как фон под iframe на случай, пока видео грузится.
         // фото карточки для детального просмотра берём из чистого
         // data-img атрибута, а не из card.style.backgroundImage - так
         // надёжнее: детальный просмотр не зависит от того, как именно
         // устроен фон самой карточки в кольце (слои, cover/contain и т.д.)
+        //
+        // ВАЖНО: сначала полностью очищаем старый фон и только потом
+        // ставим новый - если задать то же самое значение поверх уже
+        // стоящего (например, при повторном открытии той же карточки),
+        // некоторые браузеры могут не перерисовать фон заново. Плюс
+        // явно проверяем, что картинка реально загрузилась - если файл
+        // не найден (опечатка в пути, файл не загружен на сервер и т.п.),
+        // молча остаётся пустой/старый фон, и заметить причину сложно
+        detailPreview.style.backgroundImage = '';
+        detailPreview.style.background = '';
+
         if (card.dataset.img) {
-          detailPreview.style.backgroundImage = `url('${card.dataset.img}')`;
-          detailPreview.style.backgroundSize = 'cover';
-          detailPreview.style.backgroundRepeat = 'no-repeat';
-          detailPreview.style.backgroundPosition = 'center';
-          detailPreview.style.background = '';
+          const imgPath = card.dataset.img;
+          const preload = new Image();
+          preload.onload = () => {
+            // на случай, если пользователь успел открыть другую карточку,
+            // пока эта картинка ещё грузилась - не затираем чужое превью
+            if (selectedIndex !== i) return;
+            detailPreview.style.backgroundImage = `url('${imgPath}')`;
+            detailPreview.style.backgroundSize = 'cover';
+            detailPreview.style.backgroundRepeat = 'no-repeat';
+            detailPreview.style.backgroundPosition = 'center';
+          };
+          preload.onerror = () => {
+            console.error('Не удалось загрузить изображение карточки:', imgPath);
+          };
+          preload.src = imgPath;
         } else {
-          detailPreview.style.backgroundImage = '';
           detailPreview.style.background = card.style.background;
         }
 
@@ -1215,8 +1231,11 @@
         stage.classList.remove('detail-active');
         detail.classList.remove('open');
         // очищаем iframe, иначе видео/звук продолжит играть "за кадром"
-        // после закрытия панели
+        // после закрытия панели. Заодно чистим и фон - следующее
+        // открытие всегда начинается с чистого состояния
         detailPreview.innerHTML = '';
+        detailPreview.style.backgroundImage = '';
+        detailPreview.style.background = '';
         applyRingTransform();
         renderCards();
         if (ringHint) ringHint.classList.remove('hidden');
